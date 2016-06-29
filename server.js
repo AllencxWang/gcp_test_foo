@@ -12,22 +12,31 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use(function(req, res) {
-    var data = {
-        method: req.method,
-        url: req.url,
-        body: req.body,
-        query: req.query
-    };
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+      
+    if (req.method === 'OPTIONS') {
+        res.status(204).end();
+    } else {
+        var data = {
+            method: req.method,
+            url: req.url,
+            body: req.body,
+            query: req.query
+        };
 
-    res.status(200).json(data);
-    
-    request.post({
-        url: 'http://104.199.138.139:8080/instances/'+os.hostname()+'/logs',
-        json: data
-    }, function(error, response, body){
-        //console.log(body);
-    });
-
+        res.status(200).json(data);
+        
+        if(req.body.caller || req.body.caller) {
+            request.post({
+                url: 'http://104.199.138.139:8080/instances/'+os.hostname()+'/logs',
+                json: data
+            }, function(error, response, body){
+                //console.log(body);
+            });    
+        }    
+    }
 });
 
 server.listen(8080, function () {
