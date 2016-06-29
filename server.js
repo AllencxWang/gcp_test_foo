@@ -1,9 +1,9 @@
-var express = require("express"),
+var express = require('express'),
     app = express(),
-    server = require("http").Server(app),
+    server = require('http').Server(app),
     bodyParser = require('body-parser'),
-    os = require("os"),
-    request = require("request");
+    os = require('os'),
+    request = require('request');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -12,25 +12,24 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use(function(req, res) {
-    res.status(200).json({
+    var data = {
         method: req.method,
         url: req.url,
         body: req.body,
-        query: req.query,
-        host: os.hostname()
-    });
+        query: req.query
+    };
+
+    res.status(200).json(data);
     
     request.post({
-        url: 'http://localhost/test2.php',
-        json: {
-            
-        }
+        url: 'http://104.199.138.139:8080/instances/'+os.hostname+'/logs',
+        json: data
     }, function(error, response, body){
-        console.log(body);
+        //console.log(body);
     });
 
 });
 
 server.listen(8080, function () {
-    console.log("server is running on port 8080");
+    console.log('server is running on port 8080');
 });
