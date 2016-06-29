@@ -22,7 +22,7 @@ app.use(function(req, res) {
     res.status(200).json(data);
     
     request.post({
-        url: 'http://104.199.138.139:8080/instances/'+os.hostname+'/logs',
+        url: 'http://104.199.138.139:8080/instances/'+os.hostname()+'/logs',
         json: data
     }, function(error, response, body){
         //console.log(body);
