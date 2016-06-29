@@ -22,8 +22,8 @@ app.use(function(req, res) {
         var data = {
             method: req.method,
             url: req.url,
-            body: req.body,
-            query: req.query
+            body: JSON.stringify(req.body),
+            query: JSON.stringify(req.query)
         };
 
         res.status(200).json(data);
