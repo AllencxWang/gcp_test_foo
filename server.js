@@ -27,11 +27,17 @@ app.use(function(req, res) {
         };
 
         res.status(200).json(data);
-        // exclude GCP health checking
+        
         if (req.url !== '/health_check') {
             request.post({
                 url: 'http://104.199.138.139:8080/instances/'+os.hostname()+'/logs',
                 json: data
+            }, function(error, response, body){
+                //console.log(body);
+            });
+        } else {
+            request.put({
+                url: 'http://104.199.138.139:8080/instances/'+os.hostname()+'/health_check',
             }, function(error, response, body){
                 //console.log(body);
             });
